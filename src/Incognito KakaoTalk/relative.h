@@ -3,11 +3,12 @@
 #include <Windows.h>
 
 inline std::string RelativePathA(const std::string& path) {
-	CHAR buffer[MAX_PATH] = {};
-	GetModuleFileNameA(NULL, buffer, MAX_PATH);
-
+	CHAR szFilePath[MAX_PATH];
 	size_t position;
-	std::string currentDirectory = buffer;
+
+	GetModuleFileNameA(NULL, szFilePath, MAX_PATH);
+
+	std::string currentDirectory = szFilePath;
 	position = currentDirectory.find_last_of("\\/");
 	currentDirectory = currentDirectory.substr(0, position + 1);
 
@@ -15,11 +16,12 @@ inline std::string RelativePathA(const std::string& path) {
 }
 
 inline std::wstring RelativePathW(const std::wstring& path) {
-	WCHAR buffer[MAX_PATH] = {};
-	GetModuleFileNameW(NULL, buffer, MAX_PATH);
-
+	WCHAR szFilePath[MAX_PATH];
 	size_t position;
-	std::wstring currentDirectory = buffer;
+
+	GetModuleFileNameW(NULL, szFilePath, MAX_PATH);
+
+	std::wstring currentDirectory = szFilePath;
 	position = currentDirectory.find_last_of(L"\\/");
 	currentDirectory = currentDirectory.substr(0, position + 1);
 
