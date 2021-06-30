@@ -1,0 +1,4 @@
+[submodule "ext/Blackbone"]
+    path = ext/Blackbone
+    url = https://github.com/DarthTon/Blackbone.git
+    branch = master
