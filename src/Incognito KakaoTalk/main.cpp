@@ -34,6 +34,7 @@ int main() {
 	for (;;) {
 		if (processId) {
 			if (process.valid()) {
+				process.modules().reset();
 				auto module = process.modules().GetModule(L"Payload.dll");
 				if (!module)
 					Inject(processId);

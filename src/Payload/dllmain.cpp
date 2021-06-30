@@ -4,7 +4,7 @@ using json = nlohmann::json;
 
 #pragma comment(linker, "/SECTION:.shared,RWS")
 #pragma data_seg(".shared")
-json configuration;
+json config;
 #pragma data_seg()
 
 decltype(&ShellExecuteW) lpfnShellExecuteW = ShellExecuteW;
@@ -58,7 +58,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	return TRUE;
 }
 
-_declspec(dllexport) void Initialize(string configurationFilePath) {
-	std::ifstream configurationFile(configurationFilePath);
-	configurationFile >> configuration;
+_declspec(dllexport) void Initialize(string configFilePath) {
+	std::ifstream configFile(configFilePath);
+	configFile >> config;
 }
