@@ -2,11 +2,6 @@
 using namespace std;
 using json = nlohmann::json;
 
-#pragma comment(linker, "/SECTION:.shared,RWS")
-#pragma data_seg(".shared")
-json config;
-#pragma data_seg()
-
 decltype(&ShellExecuteW) lpfnShellExecuteW = ShellExecuteW;
 
 HINSTANCE WINAPI MyShellExecuteW(HWND hwnd, LPCWSTR lpOperation, LPCWSTR lpFile, LPCWSTR lpParameters, LPCWSTR lpDirectory, INT nShowCmd) {

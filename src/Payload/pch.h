@@ -2,8 +2,12 @@
 #define PCH_H
 
 #include "framework.h"
+#include <algorithm>
 #include <fstream>
+#include <map>
+#include <set>
 #include <string>
+#include <vector>
 #include <stdlib.h>
 #include <tchar.h>
 #include <shellapi.h>
