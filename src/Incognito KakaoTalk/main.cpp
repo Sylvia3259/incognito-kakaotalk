@@ -1,3 +1,4 @@
+#include <string>
 #include <tchar.h>
 #include <Windows.h>
 #include <BlackBone/Process/Process.h>
@@ -5,49 +6,33 @@
 using namespace std;
 using namespace blackbone;
 
-BOOL Inject(DWORD dwProcessId) {
-	Process process;
-	NTSTATUS status;
-
-	status = process.Attach(dwProcessId);
-	if (!NT_SUCCESS(status))
-		return FALSE;
-
-	auto result = process.modules().Inject(RelativePathW(L"Payload.dll"));
-	if (!result)
-		return FALSE;
-
-	status = process.Detach();
-	if (!NT_SUCCESS(status))
-		return FALSE;
-
-	return TRUE;
-}
-
 int main() {
+	const WCHAR szTarget[] = L"KakaoTalk.exe";
+	const wstring payload = RelativePathW(L"Payload.dll");
+
 	Process process;
-	DWORD processId = 0;
+	DWORD dwProcessId = 0;
 	NTSTATUS status;
 
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 
 	for (;;) {
-		if (processId) {
+		if (dwProcessId) {
 			if (process.valid()) {
 				process.modules().reset();
-				auto module = process.modules().GetModule(L"Payload.dll");
+				auto module = process.modules().GetModule(payload);
 				if (!module)
-					Inject(processId);
+					process.modules().Inject(payload);
 			}
 			else {
 				process.Detach();
-				processId = 0;
+				dwProcessId = 0;
 			}
 		}
 		else {
-			status = process.Attach(L"KakaoTalk.exe");
+			status = process.Attach(szTarget);
 			if (NT_SUCCESS(status))
-				processId = process.core().pid();
+				dwProcessId = process.core().pid();
 		}
 
 		Sleep(1000);
