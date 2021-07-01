@@ -52,8 +52,3 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
 	return TRUE;
 }
-
-_declspec(dllexport) void Initialize(string configFilePath) {
-	std::ifstream configFile(configFilePath);
-	configFile >> config;
-}
