@@ -28,7 +28,8 @@ const nlohmann::json& GetConfig() {
 }
 
 browser GetBrowser() {
-	const auto browserConfig = config["browser"];
+	const nlohmann::json& browserConfig = config["browser"];
+
 	if (browserConfig.is_string()) {
 		const auto browserId = browsers.find(browserConfig.get<std::string>());
 		if (browserId != browsers.end())
@@ -39,9 +40,9 @@ browser GetBrowser() {
 }
 
 std::set<action> GetActions() {
+	const nlohmann::json& actionsConfig = config["actions"];
 	std::set<action> actionIds;
 
-	const auto actionsConfig = config["actions"];
 	if (actionsConfig.is_array()) {
 		for (const auto& actionConfig : actionsConfig) {
 			if (actionConfig.is_string()) {
@@ -63,14 +64,14 @@ std::set<action> GetActions() {
 }
 
 std::vector<std::string> GetDomains(std::string type) {
+	const nlohmann::json& domainsConfig = config["domains"];
+
 	const auto is_string = [](const nlohmann::json& j) {
 		return j.is_string();
 	};
 
-	const auto domainsConfig = config["domains"];
 	if (domainsConfig.is_array() && domainsConfig.size() == 1) {
-		auto domains = domainsConfig[0];
-		domains = domains[type];
+		const nlohmann::json& domains = ((nlohmann::json&)domainsConfig[0])[type];
 		if (domains.is_array()) {
 			if (all_of(domains.begin(), domains.end(), is_string))
 				return domains.get<std::vector<std::string>>();
