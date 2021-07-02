@@ -66,14 +66,14 @@ std::set<action> GetActions() {
 std::vector<std::string> GetDomains(std::string type) {
 	const nlohmann::json& domainsConfig = config["domains"];
 
-	const auto is_string = [](const nlohmann::json& j) {
+	const auto isString = [](const nlohmann::json& j) {
 		return j.is_string();
 	};
 
 	if (domainsConfig.is_array() && domainsConfig.size() == 1) {
 		const nlohmann::json& domains = ((nlohmann::json&)domainsConfig[0])[type];
 		if (domains.is_array()) {
-			if (all_of(domains.begin(), domains.end(), is_string))
+			if (all_of(domains.begin(), domains.end(), isString))
 				return domains.get<std::vector<std::string>>();
 		}
 	}
