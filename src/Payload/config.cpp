@@ -23,7 +23,7 @@ _declspec(dllexport) void SetConfig(std::string configFilePath) {
 	configFile >> config;
 }
 
-const nlohmann::json& GetConfig() {
+_declspec(dllexport) const nlohmann::json& GetConfig() {
 	return config;
 }
 

@@ -14,7 +14,7 @@ const enum action {
 };
 
 _declspec(dllexport) void SetConfig(std::string configFilePath);
-const nlohmann::json& GetConfig();
+_declspec(dllexport) const nlohmann::json& GetConfig();
 
 browser GetBrowser();
 std::set<action> GetActions();
