@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.h"
+#include "shared.h"
 
 const enum browser {
 	DEFAULT,
@@ -13,17 +14,15 @@ const enum action {
 	LCLS,
 };
 
-_declspec(dllexport) const nlohmann::json& GetConfig();
-_declspec(dllexport) bool SetConfig(std::string configFilePath);
-_declspec(dllexport) void SetConfig(const nlohmann::json& newConfig);
-
-class Config {
+class ConfigManager {
 public:
-	Config();
+	ConfigManager();
 
 private:
-	void ParseBrowser();
-	void ParseActions();
+	void ParseConfig(std::string configFilePath);
+
+	void ParseBrowser(browser fallback);
+	void ParseActions(action fallback);
 	void ParseDomains(std::string type);
 
 	nlohmann::json config;

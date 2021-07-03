@@ -1,10 +1,5 @@
 #include "pch.h"
-#include "config.h"
-
-#pragma comment(linker, "/SECTION:.shared,RWS")
-#pragma data_seg(".shared")
-nlohmann::json sharedConfig;
-#pragma data_seg()
+#include "ConfigManager.h"
 
 const std::map<std::string, browser> browsers = {
 	{ "default", browser::DEFAULT },
@@ -18,54 +13,41 @@ const std::map<std::string, action> actions = {
 	{ "LCLS", action::LCLS },
 };
 
-_declspec(dllexport) const nlohmann::json& GetConfig() {
-	return sharedConfig;
-}
+ConfigManager::ConfigManager() {
+	ParseConfig(GetConfigFilePath());
 
-_declspec(dllexport) bool SetConfig(std::string configFilePath) {
-	try {
-		std::ifstream configFile(configFilePath);
-		configFile >> sharedConfig;
-		return true;
-	}
-	catch (...) {
-		return false;
-	}
-}
-
-_declspec(dllexport) void SetConfig(const nlohmann::json& newConfig) {
-	sharedConfig = newConfig;
-}
-
-Config::Config() {
-	config = GetConfig();
-
-	browserId = browser::DEFAULT;
-	ParseBrowser();
-
-	ParseActions();
-	if (actionIds.empty())
-		actionIds.insert(action::LCLS);
-
-	domains["always_open_in_incognito_window"];
+	ParseBrowser(browser::DEFAULT);
+	ParseActions(action::LCLS);
 	ParseDomains("always_open_in_incognito_window");
-
-	domains["never_open_in_incognito_window"];
 	ParseDomains("never_open_in_incognito_window");
 }
 
-void Config::ParseBrowser() {
-	const nlohmann::json& browserConfig = config["browser"];
-
-	if (browserConfig.is_string()) {
-		const auto iterator = browsers.find(browserConfig.get<std::string>());
-		if (iterator != browsers.end())
-			browserId = iterator->second;
+void ConfigManager::ParseConfig(std::string configFilePath) {
+	try {
+		std::ifstream configFile(configFilePath);
+		configFile >> config;
+	}
+	catch (...) {
+		config = nlohmann::json();
 	}
 }
 
-void Config::ParseActions() {
-	const nlohmann::json& actionsConfig = config["actions"];
+void ConfigManager::ParseBrowser(browser fallback) {
+	const nlohmann::json& browserConfig = this->config["browser"];
+
+	if (browserConfig.is_string()) {
+		const auto iterator = browsers.find(browserConfig.get<std::string>());
+		if (iterator != browsers.end()) {
+			this->browserId = iterator->second;
+			return;
+		}
+	}
+
+	this->browserId = fallback;
+}
+
+void ConfigManager::ParseActions(action fallback) {
+	const nlohmann::json& actionsConfig = this->config["actions"];
 
 	const auto isString = [](const nlohmann::json& j) {
 		return j.is_string();
@@ -76,18 +58,23 @@ void Config::ParseActions() {
 			for (const auto& action : actionsConfig) {
 				const auto iterator = actions.find(action.get<std::string>());
 				if (iterator != actions.end())
-					actionIds.insert(iterator->second);
+					this->actionIds.insert(iterator->second);
 			}
 		}
 	}
+
+	if (this->actionIds.empty())
+		this->actionIds.insert(fallback);
 }
 
-void Config::ParseDomains(std::string type) {
-	const nlohmann::json& domainsConfig = config["domains"];
+void ConfigManager::ParseDomains(std::string type) {
+	const nlohmann::json& domainsConfig = this->config["domains"];
 
 	const auto isString = [](const nlohmann::json& j) {
 		return j.is_string();
 	};
+
+	this->domains[type] = std::vector<std::string>();
 
 	if (domainsConfig.is_array() && domainsConfig.size() == 1) {
 		const nlohmann::json& domains = ((nlohmann::json&)domainsConfig[0])[type];
