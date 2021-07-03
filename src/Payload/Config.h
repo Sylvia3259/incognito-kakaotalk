@@ -22,7 +22,7 @@ public:
 
 	const browserId GetBrowser() const noexcept;
 	const std::set<actionId>& GetActions() const noexcept;
-	const std::vector<std::string>& GetDomains(std::string type) const noexcept;
+	const std::vector<std::wstring>& GetDomains(std::string type) const noexcept;
 
 private:
 	void ParseConfig(std::string configFilePath);
@@ -35,5 +35,5 @@ private:
 
 	browserId browser;
 	std::set<actionId> actions;
-	std::map<std::string, std::vector<std::string>> domains;
+	std::map<std::string, std::vector<std::wstring>> domains;
 };

@@ -34,12 +34,12 @@ const std::set<actionId>& Config::GetActions() const noexcept {
 	return this->actions;
 }
 
-const std::vector<std::string>& Config::GetDomains(std::string type) const noexcept {
+const std::vector<std::wstring>& Config::GetDomains(std::string type) const noexcept {
 	const auto iterator = this->domains.find(type);
 	if (iterator != this->domains.end())
 		return iterator->second;
 
-	return std::vector<std::string>();
+	return std::vector<std::wstring>();
 }
 
 void Config::ParseConfig(std::string configFilePath) {
@@ -94,13 +94,20 @@ void Config::ParseDomains(std::string type) {
 		return j.is_string();
 	};
 
-	this->domains[type] = std::vector<std::string>();
+	const auto convertToWstring = [](const std::string& s) {
+		WCHAR szBuffer[2048] = {};
+		MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.length(), szBuffer, 2048);
+		return std::wstring(szBuffer);
+	};
+
+	this->domains[type] = std::vector<std::wstring>();
 
 	if (domainsConfig.is_array() && domainsConfig.size() == 1) {
 		const nlohmann::json& domains = ((nlohmann::json&)domainsConfig[0])[type];
 		if (domains.is_array()) {
 			if (all_of(domains.begin(), domains.end(), isString))
-				this->domains[type] = domains.get<std::vector<std::string>>();
+				for (const auto& domain : domains.get<std::vector<std::string>>())
+					this->domains[type].push_back(convertToWstring(domain));
 		}
 	}
 }
