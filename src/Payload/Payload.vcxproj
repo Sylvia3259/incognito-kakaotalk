@@ -167,7 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
+    <ClInclude Include="shared.h" />
     <ClInclude Include="ConfigManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
