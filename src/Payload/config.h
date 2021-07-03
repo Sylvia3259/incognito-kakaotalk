@@ -13,9 +13,22 @@ const enum action {
 	LCLS,
 };
 
-_declspec(dllexport) void SetConfig(std::string configFilePath);
 _declspec(dllexport) const nlohmann::json& GetConfig();
+_declspec(dllexport) bool SetConfig(std::string configFilePath);
+_declspec(dllexport) void SetConfig(const nlohmann::json& newConfig);
 
-browser GetBrowser();
-std::set<action> GetActions();
-std::vector<std::string> GetDomains(std::string type);
+class Config {
+public:
+	Config();
+
+private:
+	void ParseBrowser();
+	void ParseActions();
+	void ParseDomains(std::string type);
+
+	nlohmann::json config;
+
+	browser browserId;
+	std::set<action> actionIds;
+	std::map<std::string, std::vector<std::string>> domains;
+};
