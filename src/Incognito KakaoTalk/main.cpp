@@ -2,7 +2,6 @@
 #include <tchar.h>
 #include <Windows.h>
 #include <BlackBone/Process/Process.h>
-#include <nlohmann/json.hpp>
 #include "relative.h"
 using namespace std;
 using namespace blackbone;
