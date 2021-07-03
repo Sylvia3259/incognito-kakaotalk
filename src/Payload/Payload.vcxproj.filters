@@ -24,7 +24,7 @@
     <ClInclude Include="shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConfigManager.h">
+    <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClCompile Include="shared.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConfigManager.cpp">
+    <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,5 @@
 #include "pch.h"
 using namespace std;
-using json = nlohmann::json;
 
 decltype(&ShellExecuteW) lpfnShellExecuteW = ShellExecuteW;
 
