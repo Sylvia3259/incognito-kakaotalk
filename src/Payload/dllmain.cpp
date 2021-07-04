@@ -51,7 +51,7 @@ HINSTANCE WINAPI MyShellExecuteW(HWND hwnd, LPCWSTR lpOperation, LPCWSTR lpFile,
 		switch (action) {
 		case actionId::LCLS:
 			// 2-1. 왼쪽 컨트롤 + 왼쪽 쉬프트
-			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LCONTROL) < 0)
+			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LSHIFT) < 0)
 				bOpenInIncognitoWindow = TRUE;
 			break;
 		}
