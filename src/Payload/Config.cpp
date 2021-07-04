@@ -10,6 +10,7 @@ const std::map<std::string, browserId> browserTable = {
 };
 
 const std::map<std::string, actionId> actionTable = {
+	{ "LC", actionId::LC },
 	{ "LCLS", actionId::LCLS },
 };
 
@@ -35,11 +36,38 @@ const std::set<actionId>& Config::GetActions() const noexcept {
 }
 
 const std::vector<std::wstring>& Config::GetDomains(std::string type) const noexcept {
-	const auto iterator = this->domains.find(type);
-	if (iterator != this->domains.end())
-		return iterator->second;
+	try {
+		const auto iterator = this->domains.find(type);
+		if (iterator != this->domains.end())
+			return iterator->second;
+	}
+	catch (...) {}
 
 	return std::vector<std::wstring>();
+}
+
+const browserId Config::GetDefaultBrowser() const {
+	WCHAR szExe[MAX_PATH];
+	DWORD cchExe = MAX_PATH;
+
+	const auto endsWith = [](const std::wstring& s, const std::wstring& e) {
+		if (e.size() > s.size())
+			return false;
+		return std::equal(e.rbegin(), e.rend(), s.rbegin());
+	};
+
+	if (SUCCEEDED(AssocQueryStringW(0, ASSOCSTR_EXECUTABLE, L"http", L"open", szExe, &cchExe))) {
+		if (endsWith(szExe, L"\\chrome.exe"))
+			return browserId::CHROME;
+		else if (endsWith(szExe, L"\\msedge.exe"))
+			return browserId::EDGE;
+		else if (endsWith(szExe, L"\\firefox.exe"))
+			return browserId::FIREFOX;
+		else if (endsWith(szExe, L"\\whale.exe"))
+			return browserId::WHALE;
+	}
+
+	return browserId::UNKNOWN;
 }
 
 void Config::ParseConfig(std::string configFilePath) {

@@ -8,9 +8,11 @@ const enum browserId {
 	EDGE,
 	FIREFOX,
 	WHALE,
+	UNKNOWN,
 };
 
 const enum actionId {
+	LC,
 	LCLS,
 };
 
@@ -23,6 +25,8 @@ public:
 	const browserId GetBrowser() const noexcept;
 	const std::set<actionId>& GetActions() const noexcept;
 	const std::vector<std::wstring>& GetDomains(std::string type) const noexcept;
+
+	const browserId GetDefaultBrowser() const;
 
 private:
 	void ParseConfig(std::string configFilePath);
