@@ -10,8 +10,8 @@ const std::map<std::string, browserId> browserTable = {
 };
 
 const std::map<std::string, actionId> actionTable = {
-	{ "LC", actionId::LC },
 	{ "LCLS", actionId::LCLS },
+	{ "LC", actionId::LC },
 };
 
 Config::Config() {

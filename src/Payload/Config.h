@@ -12,8 +12,8 @@ const enum browserId {
 };
 
 const enum actionId {
-	LC,
 	LCLS,
+	LC,
 };
 
 class Config {

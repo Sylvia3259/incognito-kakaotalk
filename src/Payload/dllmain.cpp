@@ -40,14 +40,14 @@ HINSTANCE WINAPI MyShellExecuteW(HWND hwnd, LPCWSTR lpOperation, LPCWSTR lpFile,
 	// 2. 사용자가 시크릿 창을 열기 위한 동작을 취했는지 검사
 	for (const auto action : config.GetActions()) {
 		switch (action) {
-		case actionId::LC:
-			// 2-1. 왼쪽 컨트롤
-			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LSHIFT) >= 0)
+		case actionId::LCLS:
+			// 2-1. 왼쪽 컨트롤 + 왼쪽 쉬프트
+			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LSHIFT) < 0)
 				bOpenInIncognitoWindow = TRUE;
 			break;
-		case actionId::LCLS:
-			// 2-2. 왼쪽 컨트롤 + 왼쪽 쉬프트
-			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LSHIFT) < 0)
+		case actionId::LC:
+			// 2-2. 왼쪽 컨트롤
+			if (GetAsyncKeyState(VK_LCONTROL) < 0 && GetAsyncKeyState(VK_LSHIFT) >= 0)
 				bOpenInIncognitoWindow = TRUE;
 			break;
 		}
