@@ -1,0 +1,12 @@
+{
+    "browser": "default",
+    "actions": [
+        "LCLS"
+    ],
+    "domains": [
+        {
+            "always_open_in_incognito_window": [],
+            "never_open_in_incognito_window": []
+        }
+    ]
+}
