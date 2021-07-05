@@ -5,7 +5,6 @@
 2. 카카오톡에서 시크릿 창에서 열려는 링크를 왼쪽 ```Ctrl``` + ```Shift``` 키를 누른 상태로 클릭합니다.
    * 만약 환경 설정에서 ```actions``` 설정을 변경하였을 경우 해당 동작을 취하면서 링크를 클릭합니다.
 ## 환경 설정
-Incognito KakaoTalk은 환경 설정 기능을 제공합니다.  
 환경 설정은 ```config.json``` 파일의 내용을 수정해 변경할 수 있습니다.
 ```json
 {
@@ -36,7 +35,7 @@ Incognito KakaoTalk은 환경 설정 기능을 제공합니다.
    * always_open_in_incognito_window
      - 이 목록에 있는 도메인은 ```actions``` 에서 설정한 동작을 취하지 않더라도 시크릿 창으로 열립니다.
    * never_open_in_incognito_window
-     - 이 목록에 있는 도메인은 ```actions``` 에서 설정한 동작을 취더라도 시크릿 창으로 열리지 않습니다.
+     - 이 목록에 있는 도메인은 ```actions``` 에서 설정한 동작을 취하더라도 시크릿 창으로 열리지 않습니다.
 ## 주의사항
 * ```Incognito KakaoTalk.exe``` 파일과 ```Payload.dll``` 파일이 같은 디렉토리에 있어야 합니다.
 * 환경 설정 기능을 사용하시려면 ```config.json``` 파일도 위 두 파일과 같은 디렉토리에 넣으십시오.
